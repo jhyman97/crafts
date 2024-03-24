@@ -1,6 +1,6 @@
 const getCrafts = async() => {
     try {
-        return (await fetch('http://localhost:3000/api/crafts')).json();
+        return (await fetch('https://arts-and-crafts-0oej.onrender.com/api/crafts')).json();
     } catch (error) {
         console.log('error retrieving data');
         return '';
@@ -14,7 +14,7 @@ const showCrafts = async() => {
     craftsJSON.forEach((craft, index) => {
         const currentColumn = columns[index % 4];
         const img = document.createElement('img');
-        img.src = 'http://localhost:3000/images/' + craft.image;
+        img.src = 'https://arts-and-crafts-0oej.onrender.com/images/' + craft.image;
 
         img.onclick = () => {
             showModal(craft);
@@ -26,7 +26,7 @@ const showCrafts = async() => {
 
 const showModal = (craft) => {
     document.getElementById('modal').style.display = 'block';
-    document.getElementById('img-details').src = 'http://localhost:3000/images/' + craft.image;
+    document.getElementById('img-details').src = 'https://arts-and-crafts-0oej.onrender.com/images/' + craft.image;
 
     const details = document.getElementById('details');
     details.innerHTML = '';
