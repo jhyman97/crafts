@@ -1,0 +1,159 @@
+:root {
+    --black: #000000;
+    --white: #FFFFFF;
+    --red: #FF0000;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(var(--black), var(--white));
+}
+
+/* Structure */
+* {
+    box-sizing: border-box;
+}
+
+#content {
+    /* background: #fff; */
+    padding: 5px;
+    width: 80%;
+    margin: auto; /* center horizontally */
+    /* border-radius: 5px; */
+}
+
+#crafts-imgs {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+.column {
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+}
+
+.column img {
+    margin-top: 8px;
+    width: 100%;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: transform 0.25s;
+}
+
+.column img:hover {
+    transform: scale(1.1);
+}
+
+#img-details {
+    max-width: 90%;
+}
+
+#modal-flex-container {
+    display: flex;
+}
+
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#modal-content {
+    background-color: var(--black);
+    color: var(--white);
+    margin: 15% auto;
+    padding: 20px;
+    width: 70%;
+    animation-name: slideMiddle;
+    animation-duration: 0.5s;
+}
+
+@keyframes slideMiddle {
+    from {transform: translateY(50%); opacity: 0}
+    to {transform: translateY(0%); opacity: 1}
+}
+
+#close {
+    color: var(--white);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: color 0.25s;
+}
+
+#close:hover,
+#close:focus {
+    color: var(--red);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.one {
+    flex: 1;
+}
+
+.two {
+    flex: 2;
+}
+
+button {
+    margin-left: 15px;
+    border: none;
+    background-color: transparent;
+    color: var(--white);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.25s;
+    transition: color 0.25s;
+}
+
+button:hover {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+#btn-add,
+#btn-edit {
+    margin-left: 15px;
+}
+
+/* Typography */
+
+h1, h2,
+button {
+    color: var(--white);
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+footer {
+    float: right;
+}
+
+#btn-add {
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 800px) {
+    .column {
+        flex: 50%;
+        max-width: 50%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .column {
+        flex: 100%;
+        max-width: 100%;
+    }
+}
