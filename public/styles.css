@@ -50,7 +50,11 @@ body {
     max-width: 90%;
 }
 
-#modal-flex-container {
+#img-prev {
+    max-width: 300px;
+}
+
+.modal-flex-container {
     display: flex;
 }
 
@@ -95,6 +99,13 @@ body {
     cursor: pointer;
 }
 
+.form-image-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .one {
     flex: 1;
 }
@@ -114,6 +125,33 @@ button {
     transition: color 0.25s;
 }
 
+form button,
+#file-btn {
+    background-color: var(--white);
+    color: var(--black);
+    border: transparent 1px solid;
+    transition: background-color 0.25s;
+}
+
+#file-button,
+#add-supply {
+    margin-top: 15px;
+}
+
+#file-btn {
+    border-radius: 10px;
+    padding: 5px;
+    transition: background-color 0.25s;
+    cursor: pointer;
+}
+
+form button:hover,
+#file-btn:hover {
+    background-color: var(--black);
+    color: var(--white);
+    border: var(--white) 1px solid;
+}
+
 button:hover {
     background-color: var(--white);
     color: var(--black);
@@ -122,6 +160,25 @@ button:hover {
 #btn-add,
 #btn-edit {
     margin-left: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+
+
+/* .supply {
+    display: inline-block;
+} */
+
+.inline {
+    display: inline-block;
+    vertical-align: top;
 }
 
 /* Typography */

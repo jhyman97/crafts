@@ -1,9 +1,11 @@
 const getCrafts = async() => {
     try {
-        return (await fetch('https://arts-and-crafts-0oej.onrender.com/api/crafts')).json();
+        //https://arts-and-crafts-0oej.onrender.com/api/crafts
+        // http://localhost:3000/api/crafts
+        return (await fetch('./api/crafts')).json();
     } catch (error) {
         console.log('error retrieving data');
-        return '';
+        // return '';
     }
 };
 
@@ -14,19 +16,26 @@ const showCrafts = async() => {
     craftsJSON.forEach((craft, index) => {
         const currentColumn = columns[index % 4];
         const img = document.createElement('img');
-        img.src = 'https://arts-and-crafts-0oej.onrender.com/images/' + craft.image;
+        // https://arts-and-crafts-0oej.onrender.com/images/
+        //http://localhost:3000/images/
+        // './images/'
+        img.src = './images/' + craft.image;
 
         img.onclick = () => {
-            showModal(craft);
+            showCraftInfo(craft);
         };
 
         currentColumn.append(img); 
     });
 };
 
-const showModal = (craft) => {
-    document.getElementById('modal').style.display = 'block';
-    document.getElementById('img-details').src = 'https://arts-and-crafts-0oej.onrender.com/images/' + craft.image;
+const showCraftInfo = (craft) => {
+    // document.getElementById('modal').style.display = 'block';
+
+    showModal('craft-details');
+    // https://arts-and-crafts-0oej.onrender.com/images/
+    //http://localhost:3000/images/
+    document.getElementById('img-details').src = './images/' + craft.image;
 
     const details = document.getElementById('details');
     details.innerHTML = '';
@@ -58,6 +67,71 @@ const showModal = (craft) => {
     details.append(ul);
 };
 
+const showForm = () => {
+    resetForm();
+    showModal('form-add-craft');
+};
+
+const resetForm = () => {
+    const form = document.getElementById('form-add-craft');
+    form.reset();
+    document.getElementById('supply-inputs').innerHTML = `<label class="inline">Supplies:</label>
+    <input class="block" type="text" required>`;
+    document.getElementById('img-prev').src = 'https://place-hold.it/200x300';
+};
+
+const addSupply = (e) => {
+    e.preventDefault();
+    const section = document.getElementById('supply-inputs');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('block');
+    // input.classList.add('supply');
+    input.setAttribute('required', '');
+    section.append(input);
+};
+
+const addCraft = async(e) => {
+    e.preventDefault();
+    const form = document.getElementById('form-add-craft');
+    const formData = new FormData(form);
+    formData.append('supplies', getSupplies());
+
+    const response = await fetch('./api/crafts' , {
+        method: 'POST',
+        body: formData
+    });
+
+    if(response.status != 200) {
+        console.log('error posting data');
+        return;
+    }
+
+    await response.json();
+    resetForm();
+    closeModal();
+    showCrafts();
+};
+
+const getSupplies = () => {
+    const inputs = document.querySelectorAll('#supply-inputs input');
+    const supplies = [];
+
+    inputs.forEach((input) => {
+        supplies.push(input.value);
+    });
+
+    return supplies;
+};
+
+const showModal = (id) => {
+    document.getElementById('modal').style.display = 'block';
+    document.querySelectorAll('#modal-details > *').forEach((element) => {
+        element.classList.add('hidden');
+    });
+    document.getElementById(id).classList.remove('hidden');
+};
+
 const closeModal = () => {
     document.getElementById('modal').style.display = 'none';
 };
@@ -69,3 +143,18 @@ window.onclick = (e) => {
 
 showCrafts();
 document.getElementById('close').onclick = closeModal;
+document.getElementById('btn-cancel').onclick = closeModal;
+document.getElementById('form-add-craft').onsubmit = addCraft;
+document.getElementById('btn-add').onclick = showForm;
+document.getElementById('add-supply').onclick = addSupply;
+// document.getElementById('btn-img').onclick = document.getElementById('image').click(e.preventDefault());`
+document.getElementById('image').onchange = (e) => {
+    const prev = document.getElementById('img-prev');
+
+    if(!e.target.files.length) {
+        prev.src = 'https://place-hold.it/200x300';
+        return;
+    }
+
+    prev.src = URL.createObjectURL(e.target.files.item(0));
+};

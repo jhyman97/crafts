@@ -2,13 +2,33 @@ const express = require('express');
 const app = express();
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + './index.html');
+// joi for server side validation
+const joi = require('joi');
+
+// muilter for file uploads
+const multer = require('multer');
+
+app.use('/uploads', express.static('uploads'));
+app.use(express.json());
+
+// cors for cross domain
+const cors = require('cors');
+app.use(cors());
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
 });
 
-app.get('/api/crafts', (req, res) => {
-    const crafts = [];
+const upload = multer({storage:storage});
+
+let crafts = [];
     crafts[0] = {
+        "_id": 1,
         "name": "Beaded JellyFish",
         "image": "bead-jellyfish.jpg",
         "description": "Create a hanging jellyfish using eggcartons and multicolored beads",
@@ -19,6 +39,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[1] = {
+        "_id": 2,
         "name": "Character Bookmarks",
         "image": "bookmarks.jpeg",
         "description": "Create a little birdy bookmark to always remin you were you were",
@@ -29,6 +50,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[2] = {
+        "_id": 3,
         "name": "Button Flowers",
         "image": "button-flowers.jpeg",
         "description": "Create a fun bouquet of flowers with your favorite buttons",
@@ -40,6 +62,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[3] = {
+        "_id": 4,
         "name": "Cheerio Necklaces",
         "image": "cheerio-necklace.webp",
         "description": "Create a fun and edible necklace",
@@ -49,6 +72,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[4] = {
+        "_id": 5,
         "name": "Cotton Ball Cupcakes",
         "image": "cotton-ball-cupcakes.webp",
         "description": "Decorate your fun filled cupcake however you want.",
@@ -60,6 +84,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[5] = {
+        "_id": 6,
         "name": "School Themed Mason Jars",
         "image": "decorated-jars.jpeg",
         "description": "Let's make mason jars to ",
@@ -71,6 +96,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[6] = {
+        "_id": 7,
         "name": "Egg Carton Flowers",
         "image": "egg-carton-flowers.jpg",
         "description": "Make a beautiful bouquet with egg cartons and other items you can find around the house",
@@ -83,6 +109,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[7] = {
+        "_id": 8,
         "name": "Finger Puppets",
         "image": "finger-puppets.jpeg",
         "description": "These little critters are easy to make, and will entertain your little one while they make a show.",
@@ -93,6 +120,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[8] = {
+        "_id": 9,
         "name": "Ribbon Flower Headbands",
         "image": "flower-headbands.jpg",
         "description": "Let your little one show off her new style with these pretty and customizable headbands",
@@ -104,6 +132,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[9] = {
+        "_id": 10,
         "name": "Hand Print Fish Puppets",
         "image": "handprint-fish.jpg",
         "description": "We all need to take every opportunity we can to remember those tiny hands, and what better way to do it, then to make fish puppets!",
@@ -115,6 +144,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[10] = {
+        "_id": 11,
         "name": "Hand Print Tree",
         "image": "hand-print-tree.jpeg",
         "description": "This is a fun way to get your little one into finger painting.",
@@ -124,6 +154,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[11] = {
+        "_id": 12,
         "name": "Melted Bead Bowl",
         "image": "melted-bead-bowl.jpeg",
         "description": "All they need to do is shape their faviorte design, warm it up and they have a brand new bowl.",
@@ -134,6 +165,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[12] = {
+        "_id": 13,
         "name": "Monster Kites",
         "image": "monster-rolls.jpg",
         "description": "Let's make those scary toilet paper rolls fly!",
@@ -145,6 +177,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[13] = {
+        "_id": 14,
         "name": "Pool Noodle Boats",
         "image": "noodle-boats.png",
         "description": "Let's make a boat that will actually float, due to the floating bottom of a pool noodle.",
@@ -155,6 +188,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[14] = {
+        "_id": 15,
         "name": "Paper Plate Bees",
         "image": "paper-plate-bees.jpeg",
         "description": "Let's have fun with making cute little bees, or big bees actually.",
@@ -168,6 +202,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[15] = {
+        "_id": 16,
         "name": "Paper Plate Dinosaurs",
         "image": "paper-plate-dinosaurs.jpg",
         "description": "Who would have thought that half a paper plate would be the base of a dinosaur.",
@@ -179,6 +214,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[16] = {
+        "_id": 17,
         "name": "Porcupine Leafs",
         "image": "porcupine-leaf.webp",
         "description": "Let's turn an ordinary paper plate into a fun filled mask.",
@@ -190,6 +226,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[17] = {
+        "_id": 18,
         "name": "Rainbow Cloud",
         "image": "rainbow-cloud.webp",
         "description": "Some cotton and color and you'll have a beautiful rainbow.",
@@ -200,6 +237,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[18] = {
+        "_id": 19,
         "name": "Fun Shaped Crayons",
         "image": "shaped-crayons.jpg",
         "description": "Let's melt some crayons together and let them harden into fun shapes.",
@@ -209,6 +247,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[19] = {
+        "_id": 20,
         "name": "Straw Farris Wheel",
         "image": "straw-faris-wheel.jpg",
         "description": "It might be too small to ride, but this farris wheel is the most colorful of all.",
@@ -218,6 +257,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[20] = {
+        "_id": 21,
         "name": "Sunny String",
         "image": "sun-string.jpg",
         "description": "Let's practice our fine motor skills while we weave the string into a fun sun.",
@@ -229,6 +269,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[21] = {
+        "_id": 22,
         "name": "Tissue Ballerinas",
         "image": "tisue-dancer.jpeg",
         "description": "These beautiful dancers will look great on display",
@@ -239,6 +280,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[22] = {
+        "_id": 23,
         "name": "Toilet Paper Roll Animals",
         "image": "toilet-paper-animals.jpeg",
         "description": "These beautiful dancers will look great on display",
@@ -249,6 +291,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[23] = {
+        "_id": 24,
         "name": "Toilet Paper Butterfly",
         "image": "toilet-paper-butterfly.jpg",
         "description": "Such a sweat little flyer",
@@ -260,6 +303,7 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
     crafts[24] = {
+        "_id": 25,
         "name": "Valentines Jar",
         "image": "valentines-jar.webp",
         "description": "So much hearts all in one",
@@ -269,7 +313,47 @@ app.get('/api/crafts', (req, res) => {
         ]
     };
 
-    res.json(crafts);
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + './index.html');
 });
+
+app.get('/api/crafts', (req, res) => {
+    res.send(crafts)
+});
+
+app.post('/api/crafts', upload.single('image'), (req, res) => {
+    const result = validateCraft(req.body);
+
+    if(result.error) {
+        res.status(400).send(result.error.details[0].message);
+    }
+
+    const craft = {
+        _id: crafts.length + 1,
+        name: req.body.name,
+        description: req.body.description,
+        supplies: req.body.supplies.split(',')
+    };
+    // console.log(craft);
+
+    if(req.file) {
+        //'./images/
+        craft.image = req.file.filename;
+    }
+
+    crafts.push(craft);
+    res.send(crafts);
+});
+
+const validateCraft = (craft) => {
+    const schema = joi.object({
+        _id: joi.allow(''),
+        name: joi.string().min(1).required(),
+        description: joi.string().min(1).required(),
+        supplies: joi.allow('')
+    });
+
+    return schema.validate(craft);
+};
 
 app.listen(3000, () => {});
