@@ -158,7 +158,8 @@ button:hover {
 }
 
 #btn-add,
-#btn-edit {
+#btn-edit,
+#btn-del {
     margin-left: 15px;
 }
 

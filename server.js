@@ -321,6 +321,7 @@ app.get('/api/crafts', (req, res) => {
     res.send(crafts)
 });
 
+// post = add
 app.post('/api/crafts', upload.single('image'), (req, res) => {
     const result = validateCraft(req.body);
 
@@ -344,6 +345,8 @@ app.post('/api/crafts', upload.single('image'), (req, res) => {
     crafts.push(craft);
     res.send(crafts);
 });
+
+app.put('/api/crafts')
 
 const validateCraft = (craft) => {
     const schema = joi.object({
