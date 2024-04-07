@@ -11,7 +11,12 @@ const getCrafts = async() => {
 
 const showCrafts = async() => {
     const craftsJSON = await getCrafts();
-    const columns = document.getElementsByClassName('column');
+    // const columns = document.getElementsByClassName('column');
+    const columns = document.querySelectorAll('.column');
+    
+    columns.forEach((column) => {
+        column.innerHTML = '';
+    });
 
     craftsJSON.forEach((craft, index) => {
         const currentColumn = columns[index % 4];
@@ -71,9 +76,11 @@ const showCraftInfo = (craft) => {
 
     details.append(ul);
 
-    editButton.onclick = () => {
-        showForm();
-    };
+    // editButton.onclick = () => {
+    //     showForm();
+    // };
+    editButton.onclick = showForm;
+    delButton.onclick = deleteCraft.bind(this, craft);
 
     populateEditForm(craft);
 };
@@ -112,7 +119,7 @@ const addEditCraft = async(e) => {
     let response;
     formData.append('supplies', getSupplies());
 
-    if(form._id.value.trim() = '') {
+    if(form._id.value.trim() == '') {
         response = await fetch('./api/crafts', {
             method: 'POST',
             body: formData
@@ -121,7 +128,7 @@ const addEditCraft = async(e) => {
         response = await fetch(`./api/crafts/${form._id.value}`, {
             method: 'PUT',
             body: formData
-        })
+        });
     }
     // const response = await fetch('./api/crafts' , {
     //     method: 'POST',
@@ -139,6 +146,25 @@ const addEditCraft = async(e) => {
     showCrafts();
 };
 
+const deleteCraft = async(craft) => {
+    let response = await fetch(`/api/crafts/${craft._id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    });
+
+    if(response.status != 200) {
+        console.log('error deleting');
+        return;
+    }
+
+    let result = await response.json();
+    resetForm();
+    showCrafts();
+    closeModal();
+};
+
 // const editCraft = async(e) => {
 //     e.preventDefault();
 //     showForm();
@@ -150,12 +176,13 @@ const populateEditForm = (craft) => {
     form._id.value = craft._id;
     form.name.value = craft.name;
     form.description.value = craft.description
-    document.getElementById('img-prev').src = craft.image;
+    document.getElementById('img-prev').src = './images/' + craft.image;
     populateSupplies(craft.supplies);
 };
 
 const populateSupplies = (supplies) => {
     const section = document.getElementById('supply-inputs');
+    section.innerHTML = `<h3>Supplies:</h3>`;
     supplies.forEach((supply) => {
         const input = document.createElement('input');
         input.setAttribute('type', 'text');

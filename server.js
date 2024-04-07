@@ -346,7 +346,53 @@ app.post('/api/crafts', upload.single('image'), (req, res) => {
     res.send(crafts);
 });
 
-app.put('/api/crafts')
+// editing an existing item
+app.put('/api/crafts/:id', upload.single('image'), (req, res) => {
+    // find the craft that matches the passed in id
+    const craft = crafts.find((c)=>c._id === parseInt(req.params.id));
+    
+    // if the passed in id doesn't match any current crafts
+    if(!craft){
+      res.send(404).send('craft with the given id was not found');
+    }
+
+    // server validation for craft
+    const result = validateCraft(req.body);
+  
+    if (result.error) {
+      res.status(400).send(result.error.details[0].message);
+      return;
+    }
+    
+    // update craft info
+    craft.name = req.body.name;
+    craft.description = req.body.description;
+    craft.supplies = req.body.supplies.split(",");
+  
+    if (req.file) {
+      craft.image = req.file.filename;
+    }
+    // send the newly updated list of crafts back
+    res.send(crafts);
+});
+
+// deleting an item
+app.delete('/api/crafts/:id', (req, res) => {
+    // find the craft that matches the passed in id
+    const craft = crafts.find((c) => c._id === parseInt(req.params.id));
+    
+    // if the passed in id doesn't match any current crafts
+    if(!craft){
+      res.status(404).send('craft with the given id was not found');
+      return;
+    }
+
+    // get the index of the craft to be deleted
+    const index = crafts.indexOf(craft);
+    // split the crafts array at the given index, and delete the item at this index
+    crafts.splice(index, 1);
+    res.send(craft);
+});
 
 const validateCraft = (craft) => {
     const schema = joi.object({
