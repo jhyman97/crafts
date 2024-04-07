@@ -76,9 +76,6 @@ const showCraftInfo = (craft) => {
 
     details.append(ul);
 
-    // editButton.onclick = () => {
-    //     showForm();
-    // };
     editButton.onclick = showForm;
     delButton.onclick = deleteCraft.bind(this, craft);
 
@@ -86,8 +83,10 @@ const showCraftInfo = (craft) => {
 };
 
 const showForm = (e) => {
-    // resetForm();
+
     showModal('form-add-craft');
+    // if we didn't click the edit button to get to here, then we must be adding a craft
+    // so reset the form (make it blank)
     if(e.target.getAttribute('id') != 'btn-edit') {
         resetForm();
     }
@@ -96,8 +95,7 @@ const showForm = (e) => {
 const resetForm = () => {
     const form = document.getElementById('form-add-craft');
     form.reset();
-    document.getElementById('supply-inputs').innerHTML = `<label class="inline">Supplies:</label>
-    <input class="block" type="text" required>`;
+    document.getElementById('supply-inputs').innerHTML = `<input class="block input" type="text" required>`;
     document.getElementById('img-prev').src = 'https://place-hold.it/200x300';
 };
 
@@ -107,6 +105,7 @@ const addSupply = (e) => {
     const input = document.createElement('input');
     input.type = 'text';
     input.classList.add('block');
+    input.classList.add('input');
     // input.classList.add('supply');
     input.setAttribute('required', '');
     section.append(input);
@@ -114,26 +113,27 @@ const addSupply = (e) => {
 
 const addEditCraft = async(e) => {
     e.preventDefault();
+    // get form
     const form = document.getElementById('form-add-craft');
+    // get data from form
     const formData = new FormData(form);
     let response;
+    // get supplies to add to form data
     formData.append('supplies', getSupplies());
 
+    // if the craft has no current _id (it is a new craft that does not exist in the crafts array)
     if(form._id.value.trim() == '') {
         response = await fetch('./api/crafts', {
             method: 'POST',
             body: formData
         });
+    // if the craft does have an _id (it already exists so we must be editing it)
     } else {
         response = await fetch(`./api/crafts/${form._id.value}`, {
             method: 'PUT',
             body: formData
         });
     }
-    // const response = await fetch('./api/crafts' , {
-    //     method: 'POST',
-    //     body: formData
-    // });
 
     if(response.status != 200) {
         console.log('error adding / editing data');
@@ -147,6 +147,7 @@ const addEditCraft = async(e) => {
 };
 
 const deleteCraft = async(craft) => {
+    // get the passed in craft's id and delete it
     let response = await fetch(`/api/crafts/${craft._id}`, {
         method: 'DELETE',
         headers: {
@@ -182,11 +183,12 @@ const populateEditForm = (craft) => {
 
 const populateSupplies = (supplies) => {
     const section = document.getElementById('supply-inputs');
-    section.innerHTML = `<h3>Supplies:</h3>`;
+    section.innerHTML = '';
     supplies.forEach((supply) => {
         const input = document.createElement('input');
         input.setAttribute('type', 'text');
         input.setAttribute('value', supply);
+        input.classList.add('input');
         section.append(input);
     });
 };

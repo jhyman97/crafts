@@ -54,8 +54,17 @@ body {
     max-width: 300px;
 }
 
-.modal-flex-container {
+.modal-flex-container,
+.supplies-flex {
     display: flex;
+}
+
+.supplies-flex {
+    width: 52%;
+}
+
+.input {
+    margin-bottom: 5px !important;
 }
 
 #modal {
@@ -133,9 +142,12 @@ form button,
     transition: background-color 0.25s;
 }
 
-#file-button,
-#add-supply {
+#file-button {
     margin-top: 15px;
+}
+
+.btn-supply {
+    margin-left: 15px;
 }
 
 #file-btn {

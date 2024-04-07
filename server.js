@@ -391,6 +391,7 @@ app.delete('/api/crafts/:id', (req, res) => {
     const index = crafts.indexOf(craft);
     // split the crafts array at the given index, and delete the item at this index
     crafts.splice(index, 1);
+    // send a response back
     res.send(craft);
 });
 
