@@ -7,6 +7,10 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient(var(--black), var(--white));
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 /* Structure */
@@ -212,6 +216,10 @@ footer {
 
 #btn-add {
     font-size: 20px;
+}
+
+#result {
+    color: red;
 }
 
 @media only screen and (max-width: 800px) {

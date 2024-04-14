@@ -2,7 +2,7 @@ const getCrafts = async() => {
     try {
         //https://arts-and-crafts-0oej.onrender.com/api/crafts
         // http://localhost:3000/api/crafts
-        return (await fetch('./api/crafts')).json();
+        return (await fetch('./api/crafts/')).json();
     } catch (error) {
         console.log('error retrieving data');
         // return '';
@@ -115,6 +115,7 @@ const addEditCraft = async(e) => {
     e.preventDefault();
     // get form
     const form = document.getElementById('form-add-craft');
+    
     // get data from form
     const formData = new FormData(form);
     let response;
@@ -136,7 +137,10 @@ const addEditCraft = async(e) => {
     }
 
     if(response.status != 200) {
-        console.log('error adding / editing data');
+        // console.log('error adding / editing data');
+        const resultSection = document.getElementById('result');
+        resultSection.innerHTML = 'An error occurred. Please make sure that everything is filled out, including the image!';
+        setTimeout(() => resultSection.innerHTML = '', 5000);
         return;
     }
 
